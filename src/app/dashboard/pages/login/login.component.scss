@@ -1,0 +1,51 @@
+.login {
+    background-color: white;
+    width: 350px;
+    padding: 20px;
+    margin: 0 auto;
+    border-radius: 20px;
+    top: 50%;
+
+    img {
+        margin: 0 auto;
+        display: block;
+    }
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+
+}
+
+::ng-deep input {
+    width: 100%;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+::ng-deep .login-button {
+    margin: 0 auto;
+}
+
+::ng-deep .p-button {
+    margin: 0 auto;
+    background-color: #FF5864;
+    background-color: #FF5864;
+    border: #FF5864;
+}
+
+.register-label {
+    text-align: center;
+    cursor: pointer;
+    color: rgb(91, 91, 91);
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
