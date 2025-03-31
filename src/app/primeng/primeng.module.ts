@@ -2,15 +2,28 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { SliderModule } from 'primeng/slider';
+import { StepperModule } from 'primeng/stepper';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { TooltipModule } from 'primeng/tooltip';
 @NgModule({
   declarations: [],
   imports: [
     CommonModule
   ],
-  exports:[
+  exports: [
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    FloatLabelModule,
+    CalendarModule,
+    DropdownModule,
+    SliderModule,
+    StepperModule,
+    KeyFilterModule,
+    TooltipModule
   ]
 })
 export class PrimengModule { }

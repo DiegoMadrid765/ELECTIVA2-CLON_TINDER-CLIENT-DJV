@@ -1,1 +1,59 @@
-<p>register works!</p>
+<section>
+   
+    <div class="main-content">
+        <p-button icon="pi pi-arrow-left" pTooltip="Volver al inicio de sesión" routerLink="/dashboard/login"/>
+        <h1>Información personal</h1>
+
+        <form [formGroup]="registerForm">
+            <div class="first-form">
+                <div class="fileds">
+
+                    <div class="field">
+                        <input pInputText placeholder="Primer nombre" formControlName="firstName" />
+                    </div>
+                    <div class="field">
+                        <input pInputText placeholder="Segundo nombre" formControlName="middleName" />
+                    </div>
+                    <div class="field">
+                        <input pInputText placeholder="Primer apellido" formControlName="lastName" />
+                    </div>
+                    <div class="field">
+                        <input pInputText placeholder="Segundo apellido" formControlName="secondLastName" />
+                    </div>
+                    <div class="field">
+                        <input pInputText placeholder="Correo electrónico" type="email" formControlName="email" />
+                    </div>
+                    <div class="field">
+                        <p-calendar [style]="{'width':'100%'}" [readonlyInput]="true" placeholder="Fecha de nacimiento"
+                            [maxDate]="maxDate" formControlName="birthDate" dateFormat="dd/mm/yy"  />
+                    </div>
+                    <div class="field">
+                        <p-dropdown [options]="genders" placeholder="Seleccione un género" [style]="{'width':'100%'}"
+                            formControlName="gender" />
+                    </div>
+                    <div class="field">
+                        <p-dropdown [options]="countries" [filter]="true" filterBy="name.common"
+                            placeholder="Seleccione un país" optionLabel="name.common" [style]="{'width':'100%'}"
+                            (onChange)="getCitiesByCountry($event)" formControlName="country" />
+                    </div>
+                    <div class="field">
+                        <p-dropdown [options]="cities" [filter]="true" placeholder="Seleccione una ciudad"
+                            formControlName="city" [virtualScroll]="true" [style]="{'width':'100%'}"
+                            [virtualScrollItemSize]="30" />
+                    </div>
+
+                    <div class="field">
+                        <input pInputText placeholder="Estatura (en centímetros)" pKeyFilter="int"
+                            formControlName="height" />
+                    </div>
+
+                </div>
+                <div class="continue-button-content">
+                    <p-button label="Continuar" class="login-button" [disabled]="!itsValidFistForm()"/>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>

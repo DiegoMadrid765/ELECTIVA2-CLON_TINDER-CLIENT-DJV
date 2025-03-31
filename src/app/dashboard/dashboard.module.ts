@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { PrimengModule } from '../primeng/primeng.module';
 import { RegisterComponent } from './pages/register/register.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { RegisterComponent } from './pages/register/register.component';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    PrimengModule
+    PrimengModule,ReactiveFormsModule
   ]
 })
 export class DashboardModule { }
