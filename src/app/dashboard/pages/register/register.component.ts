@@ -13,7 +13,8 @@ export class RegisterComponent {
   countries: any[] = [];
   cities: string[] = [];
   registerForm: FormGroup;
-  formCounter:number=1;
+  formCounter: number = 1;
+  images: any[] = [];
   constructor(private countryService: CountryService, private fb: FormBuilder) {
 
     this.genders = ["Masculino", "Femenino"]
@@ -65,8 +66,8 @@ export class RegisterComponent {
     return firstName! && middleName! && lastName! && secondLastName! && email! && birthDate! && gender! && country! && city! && height!;
   }
 
-  setFormCounter(index:number){
-    this.formCounter+=index;
+  setFormCounter(index: number) {
+    this.formCounter += index;
   }
 
   convertToBase64(file: File): Promise<string> {
@@ -76,6 +77,17 @@ export class RegisterComponent {
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = error => reject(error);
     });
+  }
+
+  async addImage(event: any) {
+
+    const file = event.target.files[0];
+    const image = {
+      type: file.type.split("/")[1],
+      data: await this.convertToBase64(file)
+    }
+    console.log(image);
+    this.images.push(image);
   }
 
 }

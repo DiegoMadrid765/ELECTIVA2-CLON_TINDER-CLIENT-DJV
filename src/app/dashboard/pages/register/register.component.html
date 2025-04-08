@@ -78,14 +78,20 @@
             <div class="second-form">
                 <div class="fields">
                     <div class="field">
-                        <input type="file" #fileInput accept="image/*" multiple hidden />
+                        <input type="file" #fileInput accept="image/*" hidden (change)="addImage($event)"/>
 
                         <p-button label="Selecciona las fotos" icon="pi pi-plus" (onClick)="fileInput.click()"
                             styleClass="p-button-primary" />
 
                     </div>
                     <div class="images">
-                        
+                        <ul class="images-content">
+                            @for (item of images; track $index) {
+                                <li>
+                                    <img [src]="item.data" alt="">
+                                </li>
+                            }
+                        </ul>
                     </div>
                 </div>
                 <div class="buttons">
