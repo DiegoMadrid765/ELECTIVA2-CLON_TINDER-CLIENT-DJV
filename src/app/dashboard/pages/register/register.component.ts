@@ -13,6 +13,7 @@ export class RegisterComponent {
   countries: any[] = [];
   cities: string[] = [];
   registerForm: FormGroup;
+  formCounter:number=1;
   constructor(private countryService: CountryService, private fb: FormBuilder) {
 
     this.genders = ["Masculino", "Femenino"]
@@ -22,13 +23,14 @@ export class RegisterComponent {
       firstName: ["", Validators.required],
       middleName: [""],
       lastName: ["", Validators.required],
-      secondLastName: ["", Validators.required],
+      secondLastName: [""],
       email: ["", [Validators.required, Validators.email]],
       birthDate: [this.maxDate, Validators.required],
       gender: ["", Validators.required],
       country: ["", Validators.required],
       city: ["", Validators.required],
       height: ["", [Validators.required, Validators.min(1), Validators.max(250)]],
+      description: ["", [Validators.required, Validators.minLength(20), Validators.maxLength(250)]],
     })
   }
   ngOnInit(): void {
@@ -60,9 +62,20 @@ export class RegisterComponent {
     const country = this.registerForm.get("country")?.valid;
     const city = this.registerForm.get("city")?.valid;
     const height = this.registerForm.get("height")?.valid;
-  
-   
-    
     return firstName! && middleName! && lastName! && secondLastName! && email! && birthDate! && gender! && country! && city! && height!;
   }
+
+  setFormCounter(index:number){
+    this.formCounter+=index;
+  }
+
+  convertToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  }
+
 }

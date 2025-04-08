@@ -1,10 +1,15 @@
 <section>
-   
+
     <div class="main-content">
-        <p-button icon="pi pi-arrow-left" pTooltip="Volver al inicio de sesión" routerLink="/dashboard/login"/>
-        <h1>Información personal</h1>
+        <div class="back-button">
+            <p-button icon="pi pi-arrow-left" routerLink="/dashboard/login" />
+        </div>
+
+
 
         <form [formGroup]="registerForm">
+            @if (formCounter==1) {
+            <h2>Información personal</h2>
             <div class="first-form">
                 <div class="fileds">
 
@@ -25,7 +30,7 @@
                     </div>
                     <div class="field">
                         <p-calendar [style]="{'width':'100%'}" [readonlyInput]="true" placeholder="Fecha de nacimiento"
-                            [maxDate]="maxDate" formControlName="birthDate" dateFormat="dd/mm/yy"  />
+                            [maxDate]="maxDate" formControlName="birthDate" dateFormat="dd/mm/yy" />
                     </div>
                     <div class="field">
                         <p-dropdown [options]="genders" placeholder="Seleccione un género" [style]="{'width':'100%'}"
@@ -41,18 +46,55 @@
                             formControlName="city" [virtualScroll]="true" [style]="{'width':'100%'}"
                             [virtualScrollItemSize]="30" />
                     </div>
-
                     <div class="field">
                         <input pInputText placeholder="Estatura (en centímetros)" pKeyFilter="int"
                             formControlName="height" />
                     </div>
-
                 </div>
                 <div class="continue-button-content">
-                    <p-button label="Continuar" class="login-button" [disabled]="!itsValidFistForm()"/>
-
+                    <p-button label="Continuar" class="login-button" (onClick)="setFormCounter(1)" />
                 </div>
             </div>
+            }@else if(formCounter==2){
+            <h2>Descripción y gustos</h2>
+            <div class="second-form">
+                <div class="fields">
+                    <div class="field">
+                        <textarea rows="5" pInputTextarea [autoResize]="true" formControlName="description">
+                    </textarea>
+                        <span
+                            [ngClass]="{'red-color': registerForm.get('description')?.value.trim().length>250}">{{registerForm.get('description')?.value.trim().length}}
+                            de 250</span>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <p-button label="Volver" class="login-button" (onClick)="setFormCounter(-1)" />
+                    <p-button label="Continuar" class="login-button" (onClick)="setFormCounter(1)" />
+                </div>
+            </div>
+            }@else if (formCounter==3) {
+
+            <h2>Fotos</h2>
+            <div class="second-form">
+                <div class="fields">
+                    <div class="field">
+                        <input type="file" #fileInput accept="image/*" multiple hidden />
+
+                        <p-button label="Selecciona las fotos" icon="pi pi-plus" (onClick)="fileInput.click()"
+                            styleClass="p-button-primary" />
+
+                    </div>
+                    <div class="images">
+                        
+                    </div>
+                </div>
+                <div class="buttons">
+                    <p-button label="Volver" class="login-button" (onClick)="setFormCounter(-1)" />
+                    <p-button label="Finalizar" class="login-button" />
+                </div>
+            </div>
+            }
+
 
         </form>
     </div>

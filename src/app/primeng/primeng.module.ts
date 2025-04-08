@@ -9,6 +9,7 @@ import { SliderModule } from 'primeng/slider';
 import { StepperModule } from 'primeng/stepper';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { TooltipModule } from 'primeng/tooltip';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 @NgModule({
   declarations: [],
   imports: [
@@ -23,7 +24,8 @@ import { TooltipModule } from 'primeng/tooltip';
     SliderModule,
     StepperModule,
     KeyFilterModule,
-    TooltipModule
+    TooltipModule,
+    InputTextareaModule
   ]
 })
 export class PrimengModule { }
