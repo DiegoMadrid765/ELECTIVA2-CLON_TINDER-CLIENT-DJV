@@ -9,7 +9,7 @@
 
         <form [formGroup]="registerForm">
             @if (formCounter==1) {
-            <h2>Información personal</h2>
+            <h2 class="text-main-information">Información personal</h2>
             <div class="first-form">
                 <div class="fileds">
 
@@ -56,7 +56,7 @@
                 </div>
             </div>
             }@else if(formCounter==2){
-            <h2>Descripción y gustos</h2>
+            <h2 class="text-description">Descripción y gustos</h2>
             <div class="second-form">
                 <div class="fields">
                     <div class="field">
@@ -74,21 +74,31 @@
             </div>
             }@else if (formCounter==3) {
 
-            <h2>Fotos</h2>
+            <h2 class="text-images">Fotos</h2>
             <div class="second-form">
                 <div class="fields">
                     <div class="field">
                         <input type="file" #fileInput accept="image/*" hidden (change)="addImage($event)"/>
 
-                        <p-button label="Selecciona las fotos" icon="pi pi-plus" (onClick)="fileInput.click()"
-                            styleClass="p-button-primary" />
+                        <p-button label="Seleccionar foto" icon="pi pi-plus" (onClick)="fileInput.click()"
+                            styleClass="p-button-primary" size="small" />
 
                     </div>
                     <div class="images">
                         <ul class="images-content">
-                            @for (item of images; track $index) {
+                            @for (item of images; track $index;let i=$index) {
                                 <li>
-                                    <img [src]="item.data" alt="">
+
+                                    <div class="image-container">
+                                        <img [src]="item.data" alt="Imagen" class="image">
+                                        <i class="pi pi-times icon-overlay" (click)="removeImage(i)"></i>
+                                        <i class="pi icon-main" [pTooltip]="!item.mainImage?'Foto principal':''" tooltipPosition="top" [ngClass]="{'pi-star-fill': item.mainImage,'pi-star': !item.mainImage}" (click)="setMainPhoto(i)"></i>
+                                      </div>
+                                      
+                                    @if (!item.mainImage) {
+                                     
+                                    }
+                                    
                                 </li>
                             }
                         </ul>

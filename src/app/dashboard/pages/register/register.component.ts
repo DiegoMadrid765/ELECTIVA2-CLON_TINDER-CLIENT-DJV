@@ -84,10 +84,22 @@ export class RegisterComponent {
     const file = event.target.files[0];
     const image = {
       type: file.type.split("/")[1],
-      data: await this.convertToBase64(file)
+      data: await this.convertToBase64(file),
+      mainImage: this.images.length == 0 ? true : false
     }
     console.log(image);
     this.images.push(image);
+  }
+
+  setMainPhoto(index: number) {
+    this.images.forEach(x => {
+      x.mainImage = false;
+    })
+    this.images.at(index).mainImage = true;
+  }
+
+  removeImage(index: number) {
+    this.images.splice(index, 1);
   }
 
 }
