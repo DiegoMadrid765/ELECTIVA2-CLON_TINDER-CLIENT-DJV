@@ -29,6 +29,7 @@ export class RegisterComponent {
       birthDate: [this.maxDate, Validators.required],
       gender: ["", Validators.required],
       country: ["", Validators.required],
+      countryCode: ["", Validators.required],
       city: ["", Validators.required],
       height: ["", [Validators.required, Validators.min(1), Validators.max(250)]],
       description: ["", [Validators.required, Validators.minLength(20), Validators.maxLength(250)]],
@@ -45,11 +46,12 @@ export class RegisterComponent {
     })
   }
   getCitiesByCountry(event: any) {
-    console.log(event);
     const country = event.value.name.common;
+    const cosuntryCode = event.value.cca2;
+    this.registerForm.get("countryCode")?.setValue(cosuntryCode);
     this.countryService.getCitiesByCountry(country).subscribe(data => {
       this.cities = data.data;
-    })
+    });
   }
 
   itsValidFistForm(): boolean {
