@@ -56,7 +56,7 @@
                 </div>
             </div>
             }@else if(formCounter==2){
-            <h2 class="text-description">Descripción y gustos</h2>
+            <h2 class="text-description">Descripción y hobbies</h2>
             <div class="second-form">
                 <div class="fields">
                     <div class="field">
@@ -65,6 +65,11 @@
                         <span
                             [ngClass]="{'red-color': registerForm.get('description')?.value.trim().length>250}">{{registerForm.get('description')?.value.trim().length}}
                             de 250</span>
+                    </div>
+                </div>
+                <div class="hobbies">
+                    <div class="card flex align-items-center gap-2 flex-wrap">
+                        <i class='bx bx-palette'></i>
                     </div>
                 </div>
                 <div class="buttons">
