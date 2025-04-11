@@ -67,11 +67,14 @@
                             de 250</span>
                     </div>
                 </div>
-                <div class="hobbies">
-                    <div class="card flex align-items-center gap-2 flex-wrap">
-                        <i class='bx bx-palette'></i>
-                    </div>
-                </div>
+                <ul class="hobbies">
+                    @for (item of hobbies; track $index;let i=$index) {
+                    <li class="hobbie" [ngClass]="{'selected-hobbie': item.selected}" (click)="setSelectedHobbie(i)">
+                        <i [class]="'bx bx-'+item.Icon" [class]="'bx bxs-'+item.Icon"></i>
+                        <span>{{item.Name}}</span>
+                    </li>
+                    }
+                </ul>
                 <div class="buttons">
                     <p-button label="Volver" class="login-button" (onClick)="setFormCounter(-1)" />
                     <p-button label="Continuar" class="login-button" (onClick)="setFormCounter(1)" />
@@ -83,7 +86,7 @@
             <div class="second-form">
                 <div class="fields">
                     <div class="field">
-                        <input type="file" #fileInput accept="image/*" hidden (change)="addImage($event)"/>
+                        <input type="file" #fileInput accept="image/*" hidden (change)="addImage($event)" />
 
                         <p-button label="Seleccionar foto" icon="pi pi-plus" (onClick)="fileInput.click()"
                             styleClass="p-button-primary" size="small" />
@@ -92,19 +95,22 @@
                     <div class="images">
                         <ul class="images-content">
                             @for (item of images; track $index;let i=$index) {
-                                <li>
+                            <li>
 
-                                    <div class="image-container">
-                                        <img [src]="item.data" alt="Imagen" class="image">
-                                        <i class="pi pi-times icon-overlay" (click)="removeImage(i)"></i>
-                                        <i class="pi icon-main" [pTooltip]="!item.mainImage?'Foto principal':''" tooltipPosition="top" [ngClass]="{'pi-star-fill': item.mainImage,'pi-star': !item.mainImage}" (click)="setMainPhoto(i)"></i>
-                                      </div>
-                                      
-                                    @if (!item.mainImage) {
-                                     
-                                    }
-                                    
-                                </li>
+                                <div class="image-container">
+                                    <img [src]="item.data" alt="Imagen" class="image">
+                                    <i class="pi pi-times icon-overlay" (click)="removeImage(i)"></i>
+                                    <i class="pi icon-main" [pTooltip]="!item.mainImage?'Foto principal':''"
+                                        tooltipPosition="top"
+                                        [ngClass]="{'pi-star-fill': item.mainImage,'pi-star': !item.mainImage}"
+                                        (click)="setMainPhoto(i)"></i>
+                                </div>
+
+                                @if (!item.mainImage) {
+
+                                }
+
+                            </li>
                             }
                         </ul>
                     </div>

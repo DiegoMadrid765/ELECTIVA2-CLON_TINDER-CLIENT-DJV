@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { subYears } from 'date-fns';
-import { CountryService } from '../../services/country.service';
+import { CountryService } from '../../../services/country.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HobbiesService } from '../../../services/hobbies.service';
+import { Hobby } from '../../models/register';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -14,8 +16,10 @@ export class RegisterComponent {
   cities: string[] = [];
   registerForm: FormGroup;
   formCounter: number = 1;
+  hobbies: Hobby[] = [];
   images: any[] = [];
-  constructor(private countryService: CountryService, private fb: FormBuilder) {
+
+  constructor(private countryService: CountryService, private fb: FormBuilder, private hobbiesService: HobbiesService) {
 
     this.genders = ["Masculino", "Femenino"]
     const currentDate = new Date();
@@ -38,6 +42,7 @@ export class RegisterComponent {
   ngOnInit(): void {
     this.itsValidFistForm();
     this.getCountries();
+    this.getHobbies();
 
   }
   getCountries() {
@@ -102,6 +107,19 @@ export class RegisterComponent {
 
   removeImage(index: number) {
     this.images.splice(index, 1);
+  }
+
+  getHobbies() {
+    this.hobbiesService.getHobbies().subscribe(data => {
+      this.hobbies = data;
+      console.log(this.hobbies);
+
+
+    })
+  }
+
+  setSelectedHobbie(index: number) {
+    this.hobbies[index].selected = !this.hobbies[index].selected;
   }
 
 }
