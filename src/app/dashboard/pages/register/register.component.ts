@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { subYears } from 'date-fns';
 import { CountryService } from '../../../services/country.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { HobbiesService } from '../../../services/hobbies.service';
 import { Hobby } from '../../models/register';
+import { Message } from 'primeng/api';
+import { AuthUserService } from '../../../services/auth-user.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -18,8 +20,10 @@ export class RegisterComponent {
   formCounter: number = 1;
   hobbies: Hobby[] = [];
   images: any[] = [];
-
-  constructor(private countryService: CountryService, private fb: FormBuilder, private hobbiesService: HobbiesService) {
+  messages: Message[] = [];
+  messages2: Message[] = [];
+  saving: boolean = false;
+  constructor(private countryService: CountryService, private fb: FormBuilder, private hobbiesService: HobbiesService, private authUserSerive: AuthUserService) {
 
     this.genders = ["Masculino", "Femenino"]
     const currentDate = new Date();
@@ -33,19 +37,29 @@ export class RegisterComponent {
       birthDate: [this.maxDate, Validators.required],
       gender: ["", Validators.required],
       country: ["", Validators.required],
+      selectedCountry: ["", Validators.required],
       countryCode: ["", Validators.required],
       city: ["", Validators.required],
+      password: ["", [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ["", [Validators.required]],
       height: ["", [Validators.required, Validators.min(1), Validators.max(250)]],
       description: ["", [Validators.required, Validators.minLength(20), Validators.maxLength(250)]],
-    })
+    }, { validator: this.passwordsMatchValidator })
   }
   ngOnInit(): void {
-    this.itsValidFistForm();
     this.getCountries();
     this.getHobbies();
 
   }
+
+  passwordsMatchValidator(group: AbstractControl): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordsMismatch: true };
+  }
+
   getCountries() {
+
     this.countryService.getCountries().subscribe(data => {
       this.countries = data;
     })
@@ -53,26 +67,83 @@ export class RegisterComponent {
   getCitiesByCountry(event: any) {
     const country = event.value.name.common;
     const cosuntryCode = event.value.cca2;
+    this.registerForm.get("selectedCountry")?.setValue(country);
     this.registerForm.get("countryCode")?.setValue(cosuntryCode);
+    this.registerForm.get("city")?.setValue("");
     this.countryService.getCitiesByCountry(country).subscribe(data => {
       this.cities = data.data;
     });
   }
 
-  itsValidFistForm(): boolean {
-    const firstName = this.registerForm.get("firstName")?.valid;
-    const middleName = this.registerForm.get("middleName")?.valid;
-    const lastName = this.registerForm.get("lastName")?.valid;
-    const secondLastName = this.registerForm.get("secondLastName")?.valid;
-    const email = this.registerForm.get("email")?.valid;
-    const birthDate = this.registerForm.get("birthDate")?.valid;
-    const gender = this.registerForm.get("gender")?.valid;
-    const country = this.registerForm.get("country")?.valid;
-    const city = this.registerForm.get("city")?.valid;
-    const height = this.registerForm.get("height")?.valid;
-    return firstName! && middleName! && lastName! && secondLastName! && email! && birthDate! && gender! && country! && city! && height!;
+  validateFirstForm() {
+
+    const { firstName, lastName, email, birthDate, gender, country, city, height } = this.registerForm.value;
+    if (!firstName) {
+      this.showMesage("El primer nombre es requerido", "error");
+      return;
+    } else if (!lastName) {
+      this.showMesage("El primer apellido es requerido", "error");
+      return;
+    } else if (!email) {
+      this.showMesage("El primer correo electrónico es requerido", "error");
+      return;
+    } else if (this.registerForm.get("email")?.hasError("email")) {
+      this.showMesage("Ingrese un correo electrónico válido", "error");
+      return;
+    } else if (!birthDate) {
+      this.showMesage("Ingrese una fecha de nacimiento", "error");
+      return;
+    } else if (!gender) {
+      this.showMesage("Seleccione un género", "error");
+      return;
+    } else if (!country) {
+      this.showMesage("Seleccione un país", "error");
+      return;
+    } else if (!city) {
+      this.showMesage("Seleccione una ciudad", "error");
+      return;
+    } else if (!height) {
+      this.showMesage("Ingrese su estatura", "error");
+      return;
+    } else if (this.registerForm.hasError("passwordsMismatch")) {
+      this.showMesage("Las contraseñas no coinciden", "error");
+      return;
+    }
+    this.setFormCounter(1);
   }
 
+  validateSecondForm() {
+    const { description } = this.registerForm.value;
+    const selectedHobbies = this.hobbies.filter(x => x.selected);
+    if (!description) {
+      this.showMesageSecondForm("La descripción es requerida", "error");
+      return;
+    }
+
+    if (this.registerForm.get("description")?.hasError("minlength")) {
+      this.showMesageSecondForm("La cantidad mínima de caracteres es de 20", "error");
+      return;
+    }
+    if (this.registerForm.get("description")?.hasError("maxlength")) {
+      this.showMesageSecondForm("La cantidad máxima de caracteres es de 250", "error");
+      return;
+    }
+    if (selectedHobbies.length < 3) {
+      this.showMesageSecondForm("Selecciona mínimo 3 hobbies para continuar", "error");
+      return;
+    }
+    this.setFormCounter(1);
+  }
+
+
+
+  showMesage(content: string, type: string) {
+    this.messages = [{ severity: type, detail: content, life: 4000 }];
+  }
+
+  showMesageSecondForm(content: string, type: string) {
+    this.messages2 = [{ severity: type, detail: content, life: 4000 }];
+  }
   setFormCounter(index: number) {
     this.formCounter += index;
   }
@@ -120,6 +191,39 @@ export class RegisterComponent {
 
   setSelectedHobbie(index: number) {
     this.hobbies[index].selected = !this.hobbies[index].selected;
+  }
+
+  registerUser() {
+    const { firstName, middleName, lastName, secondLastName, email, birthDate, gender, selectedCountry, countryCode, city, password, confirmPassword, height, description } = this.registerForm.value;
+    const selectedHobbies = this.hobbies.filter(x => x.selected).map(x => {
+      return x.id;
+    });
+    const body = {
+      firstName,
+      middleName,
+      lastName,
+      secondLastName,
+      email,
+      birthDate,
+      gender,
+      country: selectedCountry,
+      countryCode,
+      city,
+      password,
+      confirmPassword,
+      height,
+      description,
+      hobbies: selectedHobbies,
+      images: this.images
+
+    };
+    this.saving=true;
+    this.authUserSerive.registerUser(body).subscribe(data => {
+      console.log(data);
+
+    }, error => {
+      console.log(error);
+    })
   }
 
 }

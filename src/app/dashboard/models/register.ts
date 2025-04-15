@@ -4,8 +4,8 @@ export interface Images {
 }
 
 export interface Hobby {
-    Id: number,
-    Name: string,
-    Icon: string,
+    id: number,
+    name: string,
+    icon: string,
     selected:boolean
 }

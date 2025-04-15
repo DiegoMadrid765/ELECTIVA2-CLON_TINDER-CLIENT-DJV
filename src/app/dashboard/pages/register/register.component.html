@@ -8,6 +8,7 @@
 
 
         <form [formGroup]="registerForm">
+
             @if (formCounter==1) {
             <h2 class="text-main-information">Información personal</h2>
             <div class="first-form">
@@ -15,44 +16,97 @@
 
                     <div class="field">
                         <input pInputText placeholder="Primer nombre" formControlName="firstName" />
+                        <span class="error-label"
+                            *ngIf="registerForm.get('firstName')?.hasError('required')&&registerForm.get('firstName')?.touched">Este
+                            campo es obligatorio</span>
                     </div>
                     <div class="field">
                         <input pInputText placeholder="Segundo nombre" formControlName="middleName" />
                     </div>
                     <div class="field">
                         <input pInputText placeholder="Primer apellido" formControlName="lastName" />
+                        <span class="error-label"
+                            *ngIf="registerForm.get('lastName')?.hasError('required')&&registerForm.get('lastName')?.touched">Este
+                            campo es obligatorio</span>
+
                     </div>
                     <div class="field">
                         <input pInputText placeholder="Segundo apellido" formControlName="secondLastName" />
                     </div>
                     <div class="field">
                         <input pInputText placeholder="Correo electrónico" type="email" formControlName="email" />
+                        <span class="error-label"
+                            *ngIf="registerForm.get('email')?.hasError('required')&&registerForm.get('email')?.touched">Este
+                            campo es obligatorio</span>
+                        <span class="error-label"
+                            *ngIf="registerForm.get('email')?.hasError('email')&&registerForm.get('email')?.touched">Ingrese
+                            un correo válido</span>
+
                     </div>
                     <div class="field">
                         <p-calendar [style]="{'width':'100%'}" [readonlyInput]="true" placeholder="Fecha de nacimiento"
                             [maxDate]="maxDate" formControlName="birthDate" dateFormat="dd/mm/yy" />
+                        <span class="error-label"
+                            *ngIf="registerForm.get('birthDate')?.hasError('required')&&registerForm.get('birthDate')?.touched">Este
+                            campo es obligatorio</span>
+
                     </div>
                     <div class="field">
                         <p-dropdown [options]="genders" placeholder="Seleccione un género" [style]="{'width':'100%'}"
                             formControlName="gender" />
+                        <span class="error-label"
+                            *ngIf="registerForm.get('gender')?.hasError('required')&&registerForm.get('gender')?.touched">Este
+                            campo es obligatorio</span>
+
                     </div>
                     <div class="field">
                         <p-dropdown [options]="countries" [filter]="true" filterBy="name.common"
                             placeholder="Seleccione un país" optionLabel="name.common" [style]="{'width':'100%'}"
                             (onChange)="getCitiesByCountry($event)" formControlName="country" />
+                        <span class="error-label"
+                            *ngIf="registerForm.get('country')?.hasError('required')&&registerForm.get('country')?.touched">Este
+                            campo es obligatorio</span>
+
                     </div>
                     <div class="field">
                         <p-dropdown [options]="cities" [filter]="true" placeholder="Seleccione una ciudad"
                             formControlName="city" [virtualScroll]="true" [style]="{'width':'100%'}"
                             [virtualScrollItemSize]="30" />
+                        <span class="error-label"
+                            *ngIf="registerForm.get('city')?.hasError('required')&&registerForm.get('city')?.touched">Este
+                            campo es obligatorio</span>
+
                     </div>
                     <div class="field">
                         <input pInputText placeholder="Estatura (en centímetros)" pKeyFilter="int"
                             formControlName="height" />
+                        <span class="error-label"
+                            *ngIf="registerForm.get('height')?.hasError('required')&&registerForm.get('height')?.touched">Este
+                            campo es obligatorio</span>
+
+                    </div>
+                    <div class="field">
+                        <input pInputText placeholder="Contraseña" type="password" formControlName="password" />
+                        <span class="error-label"
+                            *ngIf="registerForm.get('password')?.hasError('required')&&registerForm.get('password')?.touched">La
+                            contraseña es requerida</span>
+                        <span class="error-label"
+                            *ngIf="registerForm.get('password')?.hasError('minlength')&&registerForm.get('password')?.touched">La
+                            contraseña debe tener mínmo 8 caracteres</span>
+                    </div>
+                    <div class="field">
+                        <input pInputText placeholder="Confrimar contraseña" type="password"
+                            formControlName="confirmPassword" />
+                        <span class="error-label"
+                            *ngIf="registerForm.errors?.['passwordsMismatch'] && registerForm.get('confirmPassword')?.touched">Las
+                            contraseñas no coinciden</span>
                     </div>
                 </div>
+                <div class="message-error-content">
+                    <p-messages [(value)]="messages" [enableService]="false" [closable]="false" />
+                </div>
                 <div class="continue-button-content">
-                    <p-button label="Continuar" class="login-button" (onClick)="setFormCounter(1)" />
+                    <p-button label="Continuar" class="login-button" (onClick)="validateFirstForm()" />
                 </div>
             </div>
             }@else if(formCounter==2){
@@ -70,14 +124,17 @@
                 <ul class="hobbies">
                     @for (item of hobbies; track $index;let i=$index) {
                     <li class="hobbie" [ngClass]="{'selected-hobbie': item.selected}" (click)="setSelectedHobbie(i)">
-                        <i [class]="'bx bx-'+item.Icon" [class]="'bx bxs-'+item.Icon"></i>
-                        <span>{{item.Name}}</span>
+                        <i [class]="item.icon"></i>
+                        <span>{{item.name}}</span>
                     </li>
                     }
                 </ul>
+                <div class="message-error-content">
+                    <p-messages [(value)]="messages2" [enableService]="false" [closable]="false" />
+                </div>
                 <div class="buttons">
                     <p-button label="Volver" class="login-button" (onClick)="setFormCounter(-1)" />
-                    <p-button label="Continuar" class="login-button" (onClick)="setFormCounter(1)" />
+                    <p-button label="Continuar" class="login-button" (onClick)="validateSecondForm()" />
                 </div>
             </div>
             }@else if (formCounter==3) {
@@ -105,11 +162,6 @@
                                         [ngClass]="{'pi-star-fill': item.mainImage,'pi-star': !item.mainImage}"
                                         (click)="setMainPhoto(i)"></i>
                                 </div>
-
-                                @if (!item.mainImage) {
-
-                                }
-
                             </li>
                             }
                         </ul>
@@ -117,7 +169,7 @@
                 </div>
                 <div class="buttons">
                     <p-button label="Volver" class="login-button" (onClick)="setFormCounter(-1)" />
-                    <p-button label="Finalizar" class="login-button" />
+                    <p-button label="Finalizar registro" class="login-button" (onClick)="registerUser()" [disabled]="saving"/>
                 </div>
             </div>
             }

@@ -11,6 +11,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { TooltipModule } from 'primeng/tooltip';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ChipModule } from 'primeng/chip';
+import { MessagesModule } from 'primeng/messages';
 @NgModule({
   declarations: [],
   imports: [
@@ -27,7 +28,8 @@ import { ChipModule } from 'primeng/chip';
     KeyFilterModule,
     TooltipModule,
     InputTextareaModule,
-    ChipModule
+    ChipModule,
+    MessagesModule
   ]
 })
 export class PrimengModule { }
