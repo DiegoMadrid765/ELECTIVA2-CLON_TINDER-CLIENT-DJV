@@ -1,1 +1,13 @@
-<p>home works!</p>
+<div class="home-content">
+    <app-nav-bar [userData]="userData"></app-nav-bar>
+    <router-outlet></router-outlet>
+
+
+    @for (item of usersForMatch; track $index) {
+    <p-dialog [modal]="true" [(visible)]="item.showModal" [draggable]="false" [style]="{ width: '25rem' }">
+        <div class="modal-match">
+            <h2>Recibiste un match!!</h2>
+        </div>
+    </p-dialog>
+    }
+</div>

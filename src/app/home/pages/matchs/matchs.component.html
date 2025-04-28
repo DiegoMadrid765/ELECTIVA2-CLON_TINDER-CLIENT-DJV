@@ -1,0 +1,65 @@
+<h2>Encuentra tu match perfecto</h2>
+@if (user) {
+<div class="card">
+    <div class="card-contetnt">
+    <p-galleria [value]="user.images" [numVisible]="5" [circular]="true" [showItemNavigators]="true"
+        [showThumbnails]="false" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }">
+        <ng-template pTemplate="item" let-item>
+            <img [src]="'https://flamematch.blob.core.windows.net/flamematch/'+item.url+'.'+item.type"
+                style="width: 400px; display: block; height: 500px;" />
+        </ng-template>
+        <ng-template pTemplate="caption" let-item class="caption">
+
+
+
+            <span style="margin-bottom: .5rem; color: #ffffff; font-weight: 700;">
+                {{ user.firstName|uppercase }} {{user.lastName|uppercase}},
+                {{user.age}}
+            </span>
+            <img [src]="'https://flagcdn.com/16x12/'+user.countryCode.toLowerCase()+'.png'" alt="">
+
+        </ng-template>
+    </p-galleria>
+    <div class="buttons">
+        <div class="buttons-content">
+            <div class="icon icon-reject">
+                <i class="pi pi-times"></i>
+            </div>
+         <div class="icon icon-match" (click)="sendMatch(user.id)">
+            <i class="pi pi-heart"></i>
+         </div>
+           
+        </div>
+    </div>
+    <div class="show-info-button" (click)="showUserInformation=!showUserInformation">
+        <i class="pi" [ngClass]="{'pi-angle-down':!showUserInformation,'pi-angle-up':showUserInformation}" ></i>
+    </div>
+    <div class="description" *ngIf="showUserInformation">
+        <div class="item">
+            <h3>Descripción</h3>
+            <p>{{user.description}}</p>
+        </div>
+      <div class="item">
+        <h3>Ubicación</h3>
+        <p>{{user.city}}, {{user.country}}</p>
+      </div>
+      <div class="item">
+        <h3>Estatura</h3>
+        <p>{{user.height}} cm</p>
+      </div>
+      <div class="item">
+        <h3>Hobbies</h3>
+        <ul class="hobbies">
+            @for (item of user.hobbies; track $index;let i=$index) {
+            <li class="hobbie selected-hobbie">
+                <i [class]="item.icon"></i>
+                <span>{{item.name}}</span>
+            </li>
+            }
+        </ul>
+      </div>
+    </div>
+</div>
+</div>
+
+}

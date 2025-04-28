@@ -5,12 +5,13 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { PrimengModule } from '../primeng/primeng.module';
 import { RegisterComponent } from './pages/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DashboardComponent } from './dashboard.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegisterComponent,
-    
+    DashboardComponent
   ],
   imports: [
     CommonModule,

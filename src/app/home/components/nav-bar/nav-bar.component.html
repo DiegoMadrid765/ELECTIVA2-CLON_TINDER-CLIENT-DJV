@@ -1,0 +1,32 @@
+
+@if (userData.images) {
+    <nav>
+        <div class="nav-content">
+            <div class="image">
+                <img src="./../../../../assets/images/logo.png" alt="">
+                <h1><span>Flame</span> Match</h1>
+            </div>
+            <div class="items">
+                <i class="pi pi-bell mr-4 p-text-secondary" pBadge value="2" severity="danger"></i>
+                <i class="pi pi-send mr-4 p-text-secondary" pBadge value="2" severity="danger"></i>
+            </div>
+            <div class="profile">
+                
+                    <img [src]="'https://flamematch.blob.core.windows.net/flamematch/'+userData.images[0].url+'.'+userData.images[0].type" alt="" (click)="op.toggle($event)"> 
+           
+            </div>
+        </div>
+    </nav>
+
+}
+<p-overlayPanel #op>
+
+    <ul class="options-list">
+        <li (click)="logOut()">
+            <i class="pi pi-sign-out"></i>
+            <span>Cerrar sesión</span>
+        
+        </li>
+    </ul>
+    
+</p-overlayPanel>

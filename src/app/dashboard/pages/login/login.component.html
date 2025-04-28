@@ -1,23 +1,26 @@
+<p-toast />
 <section>
     <div class="login">
         <div class="content">
             <img src="./../../../../assets/images/logo.png" alt="logo" width="100px">
             <h1><span>Flame</span> Match</h1>
         </div>
-        <div class="inputs">
-            <div class="field">
-                <input type="email" pInputText placeholder="Correo electrónico" />
-            </div>
-            <div class="field">
-                <input type="password" pInputText placeholder="Contraseña" />
-            </div>
+        <form [formGroup]="loginForm">
+            <div class="inputs">
+                <div class="field">
+                    <input type="email" pInputText placeholder="Correo electrónico" formControlName="email" />
+                </div>
+                <div class="field">
+                    <input type="password" pInputText placeholder="Contraseña" formControlName="password" />
+                </div>
 
-            <p-button label="Iniciar sesión" class="login-button" (onClick)="send()"/>
-            <div class="create-account-content">
-                <p routerLink="/dashboard/register"  class="register-label">Crear cuenta</p>
+                <p-button [label]="loginIn?'Iniciando sesión...':'Iniciar sesión'" class="login-button" [disabled]="loginForm.invalid||loginIn"
+                    (onClick)="login()" />
+                <div class="create-account-content">
+                    <p routerLink="/dashboard/register" class="register-label">Crear cuenta</p>
 
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </section>
-

@@ -6,6 +6,8 @@ import { HobbiesService } from '../../../services/hobbies.service';
 import { Hobby } from '../../models/register';
 import { Message } from 'primeng/api';
 import { AuthUserService } from '../../../services/auth-user.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -22,8 +24,13 @@ export class RegisterComponent {
   images: any[] = [];
   messages: Message[] = [];
   messages2: Message[] = [];
+  validatingFirstForm:boolean=false;
   saving: boolean = false;
-  constructor(private countryService: CountryService, private fb: FormBuilder, private hobbiesService: HobbiesService, private authUserSerive: AuthUserService) {
+  constructor(private countryService: CountryService,
+    private fb: FormBuilder,
+    private hobbiesService: HobbiesService,
+    private authUserSerive: AuthUserService,
+    private router: Router) {
 
     this.genders = ["Masculino", "Femenino"]
     const currentDate = new Date();
@@ -44,7 +51,8 @@ export class RegisterComponent {
       confirmPassword: ["", [Validators.required]],
       height: ["", [Validators.required, Validators.min(1), Validators.max(250)]],
       description: ["", [Validators.required, Validators.minLength(20), Validators.maxLength(250)]],
-    }, { validator: this.passwordsMatchValidator })
+    }, { validator: this.passwordsMatchValidator });
+    this.registerForm.get("city")?.disable();
   }
   ngOnInit(): void {
     this.getCountries();
@@ -70,13 +78,16 @@ export class RegisterComponent {
     this.registerForm.get("selectedCountry")?.setValue(country);
     this.registerForm.get("countryCode")?.setValue(cosuntryCode);
     this.registerForm.get("city")?.setValue("");
+    this.registerForm.get("city")?.setValue("");
+    this.registerForm.get("city")?.disable();
     this.countryService.getCitiesByCountry(country).subscribe(data => {
       this.cities = data.data;
+      this.registerForm.get("city")?.enable();
     });
   }
 
   validateFirstForm() {
-
+   
     const { firstName, lastName, email, birthDate, gender, country, city, height } = this.registerForm.value;
     if (!firstName) {
       this.showMesage("El primer nombre es requerido", "error");
@@ -109,7 +120,9 @@ export class RegisterComponent {
       this.showMesage("Las contraseñas no coinciden", "error");
       return;
     }
-    this.setFormCounter(1);
+    //this.setFormCounter(1);
+    this.verifyExistsUser();
+
   }
 
   validateSecondForm() {
@@ -165,7 +178,6 @@ export class RegisterComponent {
       data: await this.convertToBase64(file),
       mainImage: this.images.length == 0 ? true : false
     }
-    console.log(image);
     this.images.push(image);
   }
 
@@ -217,13 +229,32 @@ export class RegisterComponent {
       images: this.images
 
     };
-    this.saving=true;
+    this.saving = true;
     this.authUserSerive.registerUser(body).subscribe(data => {
-      console.log(data);
+      const { title, description, type } = data;
+      Swal.fire(title, description, type);
+      this.router.navigate(["dashboard/login"]);
+      this.saving = false;
 
     }, error => {
-      console.log(error);
+      this.saving = false;
+      const{title, description, type}=error.error;
+      Swal.fire(title, description, type);
     })
   }
-
+  verifyExistsUser() {
+    const { email } = this.registerForm.value;
+    this.validatingFirstForm=true;
+    this.authUserSerive.verifyExistsUser(email).subscribe(data => {
+      this.validatingFirstForm=false;
+      const { response }: any = data;
+      if (response == 1) {
+        this.setFormCounter(1);
+      } else {
+        this.showMesage("Ya hay un usuario registrado con ese correo electrónico", "error");
+      }
+    },error=>{
+      this.validatingFirstForm=false;
+    })
+  }
 }

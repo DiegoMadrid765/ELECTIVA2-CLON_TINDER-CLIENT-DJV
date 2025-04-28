@@ -12,6 +12,11 @@ import { TooltipModule } from 'primeng/tooltip';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ChipModule } from 'primeng/chip';
 import { MessagesModule } from 'primeng/messages';
+import { ToastModule } from 'primeng/toast';
+import { BadgeModule } from 'primeng/badge';
+import { GalleriaModule } from 'primeng/galleria';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { DialogModule } from 'primeng/dialog';
 @NgModule({
   declarations: [],
   imports: [
@@ -29,7 +34,12 @@ import { MessagesModule } from 'primeng/messages';
     TooltipModule,
     InputTextareaModule,
     ChipModule,
-    MessagesModule
+    MessagesModule,
+    ToastModule,
+    BadgeModule,
+    GalleriaModule,
+    OverlayPanelModule,
+    DialogModule
   ]
 })
 export class PrimengModule { }

@@ -106,7 +106,7 @@
                     <p-messages [(value)]="messages" [enableService]="false" [closable]="false" />
                 </div>
                 <div class="continue-button-content">
-                    <p-button label="Continuar" class="login-button" (onClick)="validateFirstForm()" />
+                    <p-button [disabled]="validatingFirstForm" [label]="validatingFirstForm?'Validando...':'Continuar'" class="login-button" (onClick)="validateFirstForm()" />
                 </div>
             </div>
             }@else if(formCounter==2){
