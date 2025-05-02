@@ -1,0 +1,18 @@
+<div class="chat">
+    <div class="chat-header">
+        <div class="image">
+            <img  [src]="'https://flamematch.blob.core.windows.net/flamematch/'+userData.images[0].url+'.'+userData.images[0].type" alt="">
+        </div>
+        <div class="name">
+            <span>{{userData.firstName|uppercase}} {{userData.lastName|uppercase}}</span>
+        </div>
+    </div>
+    <div class="chat-body"></div>
+    <div class="chat-footer" >
+        <div class="field">
+            <input type="text" pInputText [(ngModel)]="message"  [style]="{'width':'100%'}"/>
+
+        </div>
+        <p-button icon="pi pi-send" />
+    </div>
+</div>

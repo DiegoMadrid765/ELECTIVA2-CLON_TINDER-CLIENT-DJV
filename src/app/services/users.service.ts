@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environtment } from '../../environment/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +17,11 @@ export class UsersService {
 
   getUserInformationForMatch() {
     return this.http.get(environtment.apiurl + "users/getUserInformationForMatch");
+  }
+  getLoggedUser(){
+    return this.userInformation;
+  }
+  getChatsLists():Observable<any>{
+    return this.http.get(environtment.apiurl + "users/getchatslist");
   }
 }

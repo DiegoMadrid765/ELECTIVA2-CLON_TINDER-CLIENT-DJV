@@ -2,13 +2,13 @@
 @if (userData.images) {
     <nav>
         <div class="nav-content">
-            <div class="image">
+            <div class="image" routerLink="/home" style="cursor: pointer;">
                 <img src="./../../../../assets/images/logo.png" alt="">
                 <h1><span>Flame</span> Match</h1>
             </div>
-            <div class="items">
+            <div class="items" style="cursor: pointer;">
                 <i class="pi pi-bell mr-4 p-text-secondary" pBadge value="2" severity="danger"></i>
-                <i class="pi pi-send mr-4 p-text-secondary" pBadge value="2" severity="danger"></i>
+                <i class="pi pi-send mr-4 p-text-secondary" pBadge value="2" severity="danger" routerLink="/home/chats"></i>
             </div>
             <div class="profile">
                 

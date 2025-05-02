@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UsersService } from '../../../services/users.service';
 import { SocketService } from '../../../services/socket.service';
+import { MatchService } from '../../../services/match.service';
 
 @Component({
   selector: 'app-matchs',
@@ -9,6 +10,7 @@ import { SocketService } from '../../../services/socket.service';
 })
 export class MatchsComponent {
   user: any;
+  loggedUser: any;
   showUserInformation = false;
   /**
    *
@@ -27,7 +29,7 @@ export class MatchsComponent {
       numVisible: 1
     }
   ];
-  constructor(private usersService: UsersService, private socketService: SocketService) {
+  constructor(public usersService: UsersService, private socketService: SocketService, private matchService: MatchService) {
 
 
   }
@@ -35,11 +37,11 @@ export class MatchsComponent {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.getUserInformationForMatch();
+    this.getLoggedUserInformation();
   }
   getUserInformationForMatch() {
     this.usersService.getUserInformationForMatch().subscribe(data => {
-      this.user = data
-      console.log(this.user);
+      this.user = data;
 
     }, error => {
 
@@ -47,7 +49,19 @@ export class MatchsComponent {
     })
   }
   sendMatch(userId: number) {
-    this.user.showModal = true;
-    this.socketService.sendMessage("notification_" + userId, this.user);
+    this.matchService.registerMatch(userId).subscribe(data => {
+      this.loggedUser["showModal"] = true;
+      this.socketService.sendMessage("notification_" + userId, this.loggedUser);
+      this.getUserInformationForMatch();
+    })
+
+
+  }
+  getLoggedUserInformation() {
+    this.usersService.getLoggedUserInformation().subscribe(data => {
+      this.loggedUser = data;
+
+    });
+
   }
 }

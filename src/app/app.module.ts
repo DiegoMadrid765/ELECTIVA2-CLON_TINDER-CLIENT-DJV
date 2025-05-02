@@ -21,6 +21,7 @@ import { AddTokenInterceptor } from '../helpers/add-token.interceptor';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+  
     
   ],
   providers: [ { provide: HTTP_INTERCEPTORS, useClass: AddTokenInterceptor, multi: true },],

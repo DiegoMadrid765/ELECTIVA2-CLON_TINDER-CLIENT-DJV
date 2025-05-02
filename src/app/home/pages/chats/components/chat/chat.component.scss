@@ -1,0 +1,59 @@
+.chat-header {
+    background-color: white;
+    height: 60px;
+    border: rgb(225, 222, 222) solid 1px;
+}
+
+.chat-header {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    padding: 10px;
+    border-bottom: rgb(208, 208, 208) 1px solid;
+
+    img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgb(214, 211, 211);
+    }
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 90vh;
+
+    .chat-body {
+        border: rgb(225, 222, 222) solid 1px;
+        height: 100%;
+    }
+
+    .chat-footer {
+        .field {
+            width: 100%;
+        }
+
+        background-color: white;
+        height: 70px;
+        width: 100%;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+}
+
+::ng-deep .p-button {
+    margin: 0 auto;
+    background-color: #FF5864;
+    background-color: #FF5864;
+    border: #FF5864;
+}

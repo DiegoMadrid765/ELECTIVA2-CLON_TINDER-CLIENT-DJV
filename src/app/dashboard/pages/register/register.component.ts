@@ -232,6 +232,7 @@ export class RegisterComponent {
     this.saving = true;
     this.authUserSerive.registerUser(body).subscribe(data => {
       const { title, description, type } = data;
+      
       Swal.fire(title, description, type);
       this.router.navigate(["dashboard/login"]);
       this.saving = false;

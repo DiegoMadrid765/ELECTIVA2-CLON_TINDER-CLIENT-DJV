@@ -1,1 +1,30 @@
-<p>chats works!</p>
+<div class="chats">
+    <div class="chat-list">
+        <div class="chat-header">
+            <h1>Chats</h1>
+        </div>
+        @if (usersChats.length>0) {
+        <div class="chat-users">
+           @for (item of usersChats; track $index) {
+            <div class="chat" (click)="setSelectedUser(item)">
+                <div class="image">
+                    <img  [src]="'https://flamematch.blob.core.windows.net/flamematch/'+item.images[0].url+'.'+item.images[0].type" alt="">
+                </div>
+                <div class="name">
+                    <span>{{item.firstName|uppercase}} {{item.lastName|uppercase}}</span>
+                </div>
+            </div>
+           } 
+        </div>
+    }
+    </div>
+    <div class="main-chat">
+        @if (selectedUser) {
+            <app-chat 
+                *ngIf="chatComponentKey"
+                [userData]="selectedUser"
+                [attr.key]="chatComponentKey">
+            </app-chat>
+        }
+    </div>
+</div>

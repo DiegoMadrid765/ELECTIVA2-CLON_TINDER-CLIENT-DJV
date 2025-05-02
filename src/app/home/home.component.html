@@ -1,13 +1,74 @@
 <div class="home-content">
     <app-nav-bar [userData]="userData"></app-nav-bar>
     <router-outlet></router-outlet>
-
-
-    @for (item of usersForMatch; track $index) {
-    <p-dialog [modal]="true" [(visible)]="item.showModal" [draggable]="false" [style]="{ width: '25rem' }">
+    @for (item of usersForMatch; track $index;let i=$index) {
+    <p-dialog [modal]="true" [(visible)]="item.showModal" [draggable]="false" [style]="{ width: '600px',height:'600px' }">
         <div class="modal-match">
-            <h2>Recibiste un match!!</h2>
+            <h2>¡Nuevo match potencial!</h2>
+            <p style="margin-bottom: 50px;">A alguien le gustó tu perfil y quiere conectar contigo</p>
+            <div class="image">
+                <div class="image-content">
+                    <img [src]="'https://flamematch.blob.core.windows.net/flamematch/'+item.images[0].url+'.'+item.images[0].type" alt="">
+
+                </div>
+            </div>
+            <div class="description">
+                <p>{{item.description}}</p>
+            </div>
+            <div class="names">
+                <h3 style="text-align: center;">{{item.firstName|uppercase}}, {{item.age}}</h3>
+            </div>
+            <div class="hobbies-content">
+               
+                    <ul class="hobbies">
+                        @for (hobbie of item.hobbies; track $index;let i=$index) {
+                        <li class="hobbie selected-hobbie">
+                            <i [class]="hobbie.icon"></i>
+                            <span>{{hobbie.name}}</span>
+                        </li>
+                        }
+                    </ul>
+                </div>
+    
+                <div class="buttons">
+                    <div class="buttons-content">
+                        <div class="icon icon-reject" (click)="accpetMacthMatch(false,item.id,i)">
+                            <i class="pi pi-times"></i>
+                        </div>
+                     <div class="icon icon-match" (click)="accpetMacthMatch(true,item.id,i)">
+                        <i class="pi pi-heart"></i>
+                     </div>
+                       
+                    </div>
+                </div>
         </div>
     </p-dialog>
     }
+
+    @for (item of usersMatches; track $index;let i=$index) {
+        <p-dialog [modal]="true" [(visible)]="item.showModal" [draggable]="false" [style]="{ width: '500px',height:'500px' }">
+            
+            <div class="modal-match">
+                <h2>¡Es un match!</h2>
+                <p>A {{item.firstName|uppercase}} {{item.lastName|uppercase}} también le gustas</p>
+               
+                <div class="balls">
+                    <div class="ball" style="margin-right: -210px;">
+                        <img [src]="'https://flamematch.blob.core.windows.net/flamematch/'+userData.images[0].url+'.'+userData.images[0].type" alt="">
+                    </div>
+                    <div class="ball ball-heart" style="z-index: 900;">
+                        <i class="pi pi-heart"></i>
+                    </div>
+                    <div class="ball" style="margin-left: -210px;">
+                        <img [src]="'https://flamematch.blob.core.windows.net/flamematch/'+item.images[0].url+'.'+item.images[0].type" alt="">
+                    </div>
+                  
+                </div>
+                <p style="font-size: 20px;">Tú y <span style="font-weight: 700;">{{item.firstName|uppercase}}</span> han hecho match</p>
+                <p>¡Es el momento perfecto para iniciar una conversación!</p>
+
+            </div>
+        </p-dialog>
+        }
+
 </div>
