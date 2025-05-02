@@ -4,7 +4,6 @@ import { UsersService } from '../services/users.service';
 import { Subscription } from 'rxjs';
 import { SocketService } from '../services/socket.service';
 import { MatchService } from '../services/match.service';
-import { io, Socket } from 'socket.io-client';
 import confetti from 'canvas-confetti';
 @Component({
   selector: 'app-home',
@@ -15,7 +14,6 @@ export class HomeComponent {
   userData: any;
   userPhoto: any;
   showModal = false;
-  private readonly SERVER_URL = 'http://localhost:3000';
   usersForMatch: any[] = [];
   usersMatches: any[] = [];
 
@@ -63,7 +61,7 @@ export class HomeComponent {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.subscriptionMath.unsubscribe();
-    this.socketService.disconnect();
+    // this.socketService.disconnect();
     
   }
 
@@ -88,5 +86,6 @@ export class HomeComponent {
       zIndex: 9999
     });
   }
+  
  
 }

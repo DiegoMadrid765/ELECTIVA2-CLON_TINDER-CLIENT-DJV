@@ -13,6 +13,6 @@
             <input type="text" pInputText [(ngModel)]="message"  [style]="{'width':'100%'}"/>
 
         </div>
-        <p-button icon="pi pi-send" />
+        <p-button icon="pi pi-send" (onClick)="sendMessage()" />
     </div>
 </div>
