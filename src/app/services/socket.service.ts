@@ -13,7 +13,7 @@ export class SocketService {
     this.socket = io(this.SERVER_URL, {
 
     });
-
+    this.connect();
   }
 
   onConnect(): Observable<void> {
@@ -22,9 +22,9 @@ export class SocketService {
         observer.next();
         observer.complete();
       } else {
-      
+
         this.socket.on('connect', () => {
-       
+
           observer.next();
           observer.complete();
         });
@@ -32,20 +32,20 @@ export class SocketService {
     });
   }
 
-  
+
   joinRoom(room: string) {
-    this.socket.emit('join_room', room);  
+    this.socket.emit('join_room', room);
   }
 
-  sendMessage(room: string, body:any) {
+  sendMessage(room: string, body: any) {
     this.socket.emit('send_message', { room, body });
   }
 
-  sendMatch(room: string, body:any) {
+  sendMatch(room: string, body: any) {
     this.socket.emit('send_match', { room, body });
   }
 
-  sendMessages(room: string, body:any) {
+  sendMessages(room: string, body: any) {
     this.socket.emit('send_messages', { room, body });
   }
 
@@ -80,6 +80,8 @@ export class SocketService {
   disconnect() {
     this.socket.disconnect();
   }
-  
 
+  connect() {
+    this.socket.connect();
+  }
 }

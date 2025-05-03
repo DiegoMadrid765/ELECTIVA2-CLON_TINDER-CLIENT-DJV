@@ -12,6 +12,7 @@ export class MatchsComponent {
   user: any;
   loggedUser: any;
   showUserInformation = false;
+  loadingMatch:boolean=false;
   /**
    *
    */
@@ -40,11 +41,12 @@ export class MatchsComponent {
     this.getLoggedUserInformation();
   }
   getUserInformationForMatch() {
+    this.loadingMatch=true;
     this.usersService.getUserInformationForMatch().subscribe(data => {
       this.user = data;
-
+  this.loadingMatch=false;
     }, error => {
-
+      this.loadingMatch=false;
 
     })
   }
@@ -60,6 +62,7 @@ export class MatchsComponent {
   getLoggedUserInformation() {
     this.usersService.getLoggedUserInformation().subscribe(data => {
       this.loggedUser = data;
+   
 
     });
 

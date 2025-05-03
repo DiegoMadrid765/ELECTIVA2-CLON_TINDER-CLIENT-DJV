@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class UsersService {
   userInformation: any = {};
-  showDescription:boolean=false;
+  showDescription: boolean = false;
   constructor(private http: HttpClient) { }
 
   getLoggedUserInformation() {
@@ -18,10 +18,22 @@ export class UsersService {
   getUserInformationForMatch() {
     return this.http.get(environtment.apiurl + "users/getUserInformationForMatch");
   }
-  getLoggedUser(){
+  getLoggedUser() {
     return this.userInformation;
   }
-  getChatsLists():Observable<any>{
+  getChatsLists(): Observable<any> {
     return this.http.get(environtment.apiurl + "users/getchatslist");
+  }
+
+  getMessages(idMatch:number): Observable<any> {
+    return this.http.get(environtment.apiurl + "users/getmessages/"+idMatch);
+  }
+
+  registerChat(idMatch: number, message: string): Observable<any> {
+    const body = {
+      idMatch,
+      message
+    }
+    return this.http.post(environtment.apiurl + "users/registerchat", body);
   }
 }

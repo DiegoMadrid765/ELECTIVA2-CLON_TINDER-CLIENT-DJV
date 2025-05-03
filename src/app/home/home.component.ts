@@ -24,7 +24,7 @@ export class HomeComponent {
   }
   ngOnInit(): void {
     const userId = this.authUserService.getUserId();
- 
+    this.socketService.connect();
     this.socketService.onConnect().subscribe(() => {
       this.socketService.joinRoom("notification_" + userId);
       this.socketService.joinRoom("notificationmatch_" + userId);
@@ -61,7 +61,7 @@ export class HomeComponent {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.subscriptionMath.unsubscribe();
-    // this.socketService.disconnect();
+    this.socketService.disconnect();
     
   }
 

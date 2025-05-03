@@ -1,16 +1,36 @@
 <div class="chat">
     <div class="chat-header">
         <div class="image">
-            <img  [src]="'https://flamematch.blob.core.windows.net/flamematch/'+userData.images[0].url+'.'+userData.images[0].type" alt="">
+            <img [src]="'https://flamematch.blob.core.windows.net/flamematch/'+userData.images[0].url+'.'+userData.images[0].type"
+                alt="">
         </div>
         <div class="name">
             <span>{{userData.firstName|uppercase}} {{userData.lastName|uppercase}}</span>
         </div>
     </div>
-    <div class="chat-body"></div>
-    <div class="chat-footer" >
+    <div class="chat-body">
+
+        <ul>
+            @for (item of messages; track $index) {
+            <div class="message-content" [ngClass]="{'mymessage': item.userId==loggedUserId}">
+
+                
+                <li>
+                    @if ( item.userId!=loggedUserId) {
+                        <img height="50px" width="50px"  [src]="'https://flamematch.blob.core.windows.net/flamematch/'+userData.images[0].url+'.'+userData.images[0].type" alt="">
+                    }
+                    <span>{{item.message}}</span>
+
+                </li>
+            </div>
+
+            }
+        </ul>
+    </div>
+    <div class="chat-footer">
         <div class="field">
-            <input type="text" pInputText [(ngModel)]="message"  [style]="{'width':'100%'}"/>
+            <input type="text" pInputText [(ngModel)]="message" [style]="{'width':'100%'}"
+                (keyup.enter)="sendMessage()" />
 
         </div>
         <p-button icon="pi pi-send" (onClick)="sendMessage()" />

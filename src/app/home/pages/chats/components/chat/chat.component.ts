@@ -1,6 +1,8 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { SocketService } from '../../../../../services/socket.service';
 import { Subscription } from 'rxjs';
+import { UsersService } from '../../../../../services/users.service';
+import { AuthUserService } from '../../../../../services/auth-user.service';
 
 @Component({
   selector: 'app-chat',
@@ -11,10 +13,12 @@ export class ChatComponent {
   @Input() userData: any;
   message: string = "";
   private subscription!: Subscription;
+  messages:any[]=[];
+  loggedUserId:number=0;
   /**
    *
    */
-  constructor(private socketService: SocketService) {
+  constructor(private socketService: SocketService, private userService: UsersService, private authService: AuthUserService) {
 
   }
   ngOnInit(): void {
@@ -22,8 +26,10 @@ export class ChatComponent {
 
     this.socketService.onConnect().subscribe(() => {
       this.subscription = this.socketService.onMessages().subscribe((data) => {
-        console.log("holas");
 
+
+        
+        this.messages.push(data);
       });
 
     });
@@ -38,13 +44,37 @@ export class ChatComponent {
     }
   }
   onUserChanged() {
+    this.messages=[];
+    this.loggedUserId = this.authService.getUserId();
+    this.getMessages();
     this.socketService.joinRoom("messages_" + this.userData.idMatch);
+  }
+  sendMessage() {
+    const userId = this.authService.getUserId();
+    this.userService.registerChat(this.userData.idMatch, this.message).subscribe(data => {
+  
+      const body = {
+        message: this.message,
+        userId,
+        date:new Date()
+      }
 
+      this.message="";
+      this.sendMessageSocket(body);
+    },error=>{
+
+    })
+  }
+  sendMessageSocket(body: any) {
+
+    this.socketService.sendMessages("messages_" + this.userData.idMatch, body);
   }
 
-  sendMessage() {
-
-    this.socketService.sendMessages("messages_" + this.userData.idMatch, "holita");
+  getMessages(){
+    this.userService.getMessages(this.userData.idMatch).subscribe(data=>{
+  
+      this.messages=data;
+    })
   }
 
 }

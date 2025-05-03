@@ -57,3 +57,32 @@
     background-color: #FF5864;
     border: #FF5864;
 }
+.chat-body{
+    overflow-y: scroll;
+    ul{
+        list-style: none;
+        display: grid;
+        gap: 10px;
+    }
+    li{
+        width: 80%;
+        background-color: white;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 10px;
+    }
+    .message-content{
+        display: flex;
+       
+        font-weight: 700;
+        img{
+            border-radius: 50%;
+        }
+    }
+    .mymessage{
+        justify-content: end;
+        margin-right: 10px;
+    }
+}
