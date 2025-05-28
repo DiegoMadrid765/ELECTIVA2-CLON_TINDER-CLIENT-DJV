@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { UsersService } from '../../../services/users.service';
 import { SocketService } from '../../../services/socket.service';
 import { MatchService } from '../../../services/match.service';
+import { HobbiesService } from '../../../services/hobbies.service';
+import { CountryService } from '../../../services/country.service';
 
 @Component({
   selector: 'app-matchs',
@@ -13,6 +15,11 @@ export class MatchsComponent {
   loggedUser: any;
   showUserInformation = false;
   loadingMatch:boolean=false;
+  hobbies:any[]=[];
+  countries:any[]=[];
+  cities:any[]=[];
+  selectedCountry:string="";
+  selectedCity:string="";
   /**
    *
    */
@@ -30,7 +37,7 @@ export class MatchsComponent {
       numVisible: 1
     }
   ];
-  constructor(public usersService: UsersService, private socketService: SocketService, private matchService: MatchService) {
+  constructor(public usersService: UsersService, private socketService: SocketService, private matchService: MatchService,private hobbiesService:HobbiesService,private countryService:CountryService) {
 
 
   }
@@ -39,6 +46,8 @@ export class MatchsComponent {
     //Add 'implements OnInit' to the class.
     this.getUserInformationForMatch();
     this.getLoggedUserInformation();
+    this.getHobbies();
+    this.getCountries();
   }
   getUserInformationForMatch() {
     this.loadingMatch=true;
@@ -67,4 +76,34 @@ export class MatchsComponent {
     });
 
   }
+
+    getHobbies() {
+    this.hobbiesService.getHobbies().subscribe(data => {
+      this.hobbies = data;
+      console.log(this.hobbies);
+
+
+    })
+  }
+
+    getCountries() {
+
+    this.countryService.getCountries().subscribe(data => {
+      this.countries = data;
+    })
+  }
+  getCitiesByCountry(event: any) {
+    const country = event.value.name.common;
+    const cosuntryCode = event.value.cca2;
+    this.countryService.getCitiesByCountry(country).subscribe(data => {
+      this.cities = data.data;
+    });
+  }
+
+  cleanFilters(){
+    this.selectedCountry="";
+    this.selectedCity="";
+    this.getUserInformationForMatch();
+  }
+
 }

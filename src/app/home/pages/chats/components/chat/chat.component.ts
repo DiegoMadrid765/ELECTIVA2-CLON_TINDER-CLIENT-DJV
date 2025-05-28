@@ -50,6 +50,9 @@ export class ChatComponent {
     this.socketService.joinRoom("messages_" + this.userData.idMatch);
   }
   sendMessage() {
+    if(!this.message.trim()){
+      return;
+    }
     const userId = this.authService.getUserId();
     this.userService.registerChat(this.userData.idMatch, this.message).subscribe(data => {
   

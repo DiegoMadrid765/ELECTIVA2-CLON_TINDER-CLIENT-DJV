@@ -93,3 +93,17 @@ h2 {
 .card-contetnt{
     background-color: white;
 }
+.filters{
+
+    width: 1200px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    gap: 20px;
+}
+::ng-deep .p-button {
+    margin: 0 auto;
+    background-color: #FF5864;
+    background-color: #FF5864;
+    border: #FF5864;
+}

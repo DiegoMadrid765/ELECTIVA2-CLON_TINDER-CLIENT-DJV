@@ -1,3 +1,26 @@
+<div style="margin-top: 30px;">
+
+<h2 >Filtros</h2>
+<div class="filters">
+      <div class="field">
+                        <p-dropdown [options]="countries" [filter]="true" filterBy="name.common"
+                            placeholder="Seleccione un país" optionLabel="name.common" [style]="{'width':'100%'}"
+                            [(ngModel)]="selectedCountry"
+                            (onChange)="getCitiesByCountry($event)" />
+               
+
+                    </div>
+                     <div class="field">
+                        <p-dropdown [options]="cities" [filter]="true" placeholder="Seleccione una ciudad"
+                           [virtualScroll]="true" [style]="{'width':'100%'}"
+                            [virtualScrollItemSize]="30" [(ngModel)]="selectedCity"/>
+
+                    </div>
+                    <p-button label="Filtrar" [disabled]="!selectedCity||!selectedCountry"></p-button>
+                    <p-button label="Limpiar filtros" (onClick)="cleanFilters()"></p-button>
+</div>
+
+</div>
 <h2>Encuentra tu match perfecto</h2>
 @if (user) {
 <div class="card">
@@ -22,7 +45,7 @@
     </p-galleria>
     <div class="buttons">
         <div class="buttons-content">
-            <div class="icon icon-reject">
+            <div class="icon icon-reject" (click)="  this.getUserInformationForMatch()">
                 <i class="pi pi-times"></i>
             </div>
          <div class="icon icon-match" (click)="sendMatch(user.id)">
