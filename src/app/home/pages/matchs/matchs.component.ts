@@ -18,7 +18,7 @@ export class MatchsComponent {
   hobbies:any[]=[];
   countries:any[]=[];
   cities:any[]=[];
-  selectedCountry:string="";
+  selectedCountry:any;
   selectedCity:string="";
   /**
    *
@@ -59,6 +59,20 @@ export class MatchsComponent {
 
     })
   }
+
+   getUserInformationForMatchFilter() {
+    this.loadingMatch=true;
+    console.log(this.selectedCountry);
+    
+    this.usersService.getUserInformationForMatchFilter(this.selectedCountry.name.common,this.selectedCity).subscribe(data => {
+      this.user = data;
+  this.loadingMatch=false;
+    }, error => {
+      this.loadingMatch=false;
+
+    })
+  }
+
   sendMatch(userId: number) {
     this.matchService.registerMatch(userId).subscribe(data => {
       this.loggedUser["showModal"] = true;

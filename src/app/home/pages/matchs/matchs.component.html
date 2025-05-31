@@ -16,7 +16,7 @@
                             [virtualScrollItemSize]="30" [(ngModel)]="selectedCity"/>
 
                     </div>
-                    <p-button label="Filtrar" [disabled]="!selectedCity||!selectedCountry"></p-button>
+                    <p-button label="Filtrar" [disabled]="!selectedCity||!selectedCountry" (onClick)="getUserInformationForMatchFilter()"></p-button>
                     <p-button label="Limpiar filtros" (onClick)="cleanFilters()"></p-button>
 </div>
 

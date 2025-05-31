@@ -18,6 +18,13 @@ export class UsersService {
   getUserInformationForMatch() {
     return this.http.get(environtment.apiurl + "users/getUserInformationForMatch");
   }
+  getUserInformationForMatchFilter(country: string, city: string) {
+    const body = {
+      country,
+      city
+    }
+    return this.http.post(environtment.apiurl + "users/getUserinformationformatchfilter", body);
+  }
   getLoggedUser() {
     return this.userInformation;
   }
@@ -25,8 +32,8 @@ export class UsersService {
     return this.http.get(environtment.apiurl + "users/getchatslist");
   }
 
-  getMessages(idMatch:number): Observable<any> {
-    return this.http.get(environtment.apiurl + "users/getmessages/"+idMatch);
+  getMessages(idMatch: number): Observable<any> {
+    return this.http.get(environtment.apiurl + "users/getmessages/" + idMatch);
   }
 
   registerChat(idMatch: number, message: string): Observable<any> {
